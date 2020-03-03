@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.FragmentAllCountries">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1">
+        <Button
+            android:layout_width="0dp"
+            android:text="asia"
+            android:id="@+id/fa_asia"
+            android:textSize="10sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <Button
+            android:layout_width="0dp"
+            android:text="europe"
+            android:id="@+id/fa_europe"
+            android:textSize="10sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <Button
+            android:layout_width="0dp"
+            android:text="africa"
+            android:id="@+id/fa_africa"
+            android:textSize="10sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <Button
+            android:layout_width="0dp"
+            android:text="america"
+            android:id="@+id/fa_america"
+            android:textSize="10sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <Button
+            android:layout_width="0dp"
+            android:text="other"
+            android:id="@+id/fa_other"
+            android:textSize="10sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+    </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:background="@android:color/darker_gray"
+            android:layout_height="0dp"
+            android:layout_weight="0.005"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/Fall_recyercleview_all"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.9">
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+
+    <!-- TODO: Update blank fragment layout -->
+    </LinearLayout>
+
+</LinearLayout>
