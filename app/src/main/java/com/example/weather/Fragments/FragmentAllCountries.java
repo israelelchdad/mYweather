@@ -24,14 +24,19 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class FragmentAllCountries extends Fragment implements View.OnClickListener {
+public class FragmentAllCountries extends Fragment implements View.OnClickListener,AdapterOfallCountries.OnClicMoveCountry {
     ArrayList<Country>myListAllCountry;
+    ArrayList<Country>myListAllCountryies = new ArrayList<>();
+    ArrayList<Country>myListCountryByRegin;
+    ArrayList<Country> myListContrie;
+    private String myRegion = "";
     View myView;
     Button asia;
     Button europe;
     Button africa;
     Button america;
-    Button other;
+    Button allCountry;
+    Button Ocania;
     private RecyclerView myRecyclerViewOfallContries;
     private RecyclerView.LayoutManager myLayoutManager;
     private AdapterOfallCountries myAdapterOfallCountries;
@@ -46,7 +51,6 @@ public class FragmentAllCountries extends Fragment implements View.OnClickListen
     public static FragmentAllCountries newInstance() {
         FragmentAllCountries fragment = new FragmentAllCountries();
         Bundle args = new Bundle();
-
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,6 +73,24 @@ public class FragmentAllCountries extends Fragment implements View.OnClickListen
         return myView;
     }
 
+    public void initListAllCountries() {
+        Call<Country[]> call = RestClient.mycounryisService.getAllCountries();
+        call.enqueue(new Callback<Country[]>() {
+            @Override
+            public void onResponse(Call<Country[]> call, Response<Country[]> response) {
+                Country[] myAreyCounty= response.body();
+                myListAllCountry = new ArrayList<>(Arrays.asList(myAreyCounty));
+                myListAllCountryies.addAll(myListAllCountry);
+                initrecyrclerview(myListAllCountry);
+            }
+
+            @Override
+            public void onFailure(Call<Country[]> call, Throwable t) {
+
+            }
+        });
+    }
+
     private void initButtens() {
         asia = myView.findViewById(R.id.fa_asia);
         asia.setOnClickListener(this);
@@ -78,8 +100,10 @@ public class FragmentAllCountries extends Fragment implements View.OnClickListen
         america.setOnClickListener(this);
         europe = myView.findViewById(R.id.fa_europe);
         europe.setOnClickListener(this);
-        other = myView.findViewById(R.id.fa_other);
-        other.setOnClickListener(this);
+        allCountry = myView.findViewById(R.id.fa_allCountry);
+        allCountry.setOnClickListener(this);
+        Ocania = myView.findViewById(R.id.fa_Ocania);
+        Ocania.setOnClickListener(this);
 
     }
 
@@ -87,39 +111,10 @@ public class FragmentAllCountries extends Fragment implements View.OnClickListen
         myRecyclerViewOfallContries = myView.findViewById(R.id.Fall_recyercleview_all);
         myLayoutManager = new LinearLayoutManager(getContext());
         myRecyclerViewOfallContries.setLayoutManager(myLayoutManager);
-        myAdapterOfallCountries = new AdapterOfallCountries(myListCountry);
+        myAdapterOfallCountries = new AdapterOfallCountries(myListCountry, getContext(),this);
         myRecyclerViewOfallContries.setAdapter(myAdapterOfallCountries);
 
     }
-
-    public void initListAllCountries() {
-        Call<Country[]> call = RestClient.mycounryisService.getAllCountries();
-        call.enqueue(new Callback<Country[]>() {
-            @Override
-            public void onResponse(Call<Country[]> call, Response<Country[]> response) {
-                Country[] myAreyCounty= response.body();
-                myListAllCountry = new ArrayList<>(Arrays.asList(myAreyCounty));
-                int a = 5;
-                initrecyrclerview(myListAllCountry);
-            }
-
-            @Override
-            public void onFailure(Call<Country[]> call, Throwable t) {
-                int b = 6;
-                int c = 7;
-
-            }
-        });
-    }
-
-
-
-    public void onButtonPressed() {
-        if (mListener != null) {
-            mListener.onFragmentInteraction();
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -131,6 +126,15 @@ public class FragmentAllCountries extends Fragment implements View.OnClickListen
         }
     }
 
+
+    public void onButtonPressed() {
+        if (mListener != null) {
+           mListener.onFragmentLisitinre();
+        }
+    }
+
+
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -141,22 +145,88 @@ public class FragmentAllCountries extends Fragment implements View.OnClickListen
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.fa_asia  :
+                myRegion = "Asia";
+                //initListCountriesByRegin("Asia");
+                initListCountriesByReginByAllContries(myRegion);
                 break;
             case R.id.fa_america  :
+                myRegion = "Americas";
+                //initListCountriesByRegin("Americas");
+                initListCountriesByReginByAllContries(myRegion);
                 break;
             case R.id.fa_africa :
+                myRegion = "Africa";
+                //initListCountriesByRegin("Africa");
+                initListCountriesByReginByAllContries(myRegion);
                 break;
             case R.id.fa_europe  :
+                myRegion = "Europe";
+                //initListCountriesByRegin("Europe");
+                initListCountriesByReginByAllContries(myRegion);
                 break;
-            case R.id.fa_other :
+            case R.id.fa_Ocania  :
+                myRegion = "Oceania";
+                //initListCountriesByRegin("Oceania");
+                initListCountriesByReginByAllContries(myRegion);
+                break;
+            case R.id.fa_allCountry :
+                myRegion = "";
+                initListCountriesByReginByAllContries(myRegion);
                 break;
 
 
     }}
 
+    private void initListCountriesByReginByAllContries(String regin) {
+         myListContrie = new ArrayList<>();
+        for (Country myContry:myListAllCountryies) {
+          if(myContry.getRegion().contains(regin)){
+              myListContrie.add(myContry);
+
+        }
+        }
+
+        //initrecyrclerview(myListContrie);
+        setData();
+    }
+
+    private void setData() {
+        myListAllCountry.clear();
+        myListAllCountry.addAll(myListContrie);
+        myAdapterOfallCountries.notifyDataSetChanged();
+    }
+
+    private void initListCountriesByRegin(String region) {
+        Call<Country[]> call = RestClient.mycounryisService.serchContryByRegion(region);
+        call.enqueue(new Callback<Country[]>() {
+            @Override
+            public void onResponse(Call<Country[]> call, Response<Country[]> response) {
+                Country[] myAreyCounty= response.body();
+                myListCountryByRegin = new ArrayList<>(Arrays.asList(myAreyCounty));
+                initrecyrclerview(myListCountryByRegin);
+
+            }
+
+            @Override
+            public void onFailure(Call<Country[]> call, Throwable t) {
+
+
+            }
+        });
+
+
+    }
+
+    @Override
+    public void  MoveContry(Country myCountry) {
+
+        mListener.moveCountryToActivity(myCountry);
+
+    }
+
 
     public interface OnFragmentInteractionListener {
-
-        void onFragmentInteraction();
+        void onFragmentLisitinre();
+        void moveCountryToActivity(Country myCountry);
     }
 }
