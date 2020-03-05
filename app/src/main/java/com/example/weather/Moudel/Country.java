@@ -1,10 +1,13 @@
 package com.example.weather.Moudel;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Country {
+public class Country implements Parcelable {
 
     @SerializedName("name")
     private String name;
@@ -14,6 +17,25 @@ public class Country {
     private List<Double> latlng;
     @SerializedName("flag")
     private String flag;
+
+    protected Country(Parcel in) {
+        name = in.readString();
+        region = in.readString();
+        flag = in.readString();
+    }
+
+    public static final Creator<Country> CREATOR = new Creator<Country>() {
+        @Override
+        public Country createFromParcel(Parcel in) {
+            return new Country(in);
+        }
+
+        @Override
+        public Country[] newArray(int size) {
+            return new Country[size];
+        }
+    };
+
     public String getName() {
         return name;
     }
@@ -53,5 +75,17 @@ public class Country {
         this.region = region;
         this.latlng = latlng;
         this.flag = flag;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(region);
+        dest.writeString(flag);
     }
 }

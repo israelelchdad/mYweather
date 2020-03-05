@@ -1,5 +1,6 @@
 package com.example.weather.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,7 +9,10 @@ import com.example.weather.Fragments.FragmentAllCountries;
 import com.example.weather.Moudel.Country;
 import com.example.weather.R;
 
+import java.util.ArrayList;
+
 public class ActivityAllCountries extends AppCompatActivity implements FragmentAllCountries.OnFragmentInteractionListener {
+    public static final String KEY= "KEY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +37,11 @@ public class ActivityAllCountries extends AppCompatActivity implements FragmentA
         Double v = myCountry.getLatlng().get(0);
         Double ve = myCountry.getLatlng().get(1);
         int a = 5;
+        Intent resultIntent = new Intent(this, MapsActivity.class);
+        ArrayList latLang= (ArrayList) myCountry.getLatlng();
+        resultIntent.putParcelableArrayListExtra(KEY,  latLang);
+        startActivity(resultIntent);
+
 
     }
     @Override
