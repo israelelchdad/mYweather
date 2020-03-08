@@ -6,7 +6,9 @@ import android.widget.Toast;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.weather.Moudel.Country;
+import com.example.weather.Moudel.Response;
 import com.example.weather.R;
+import com.example.weather.RestClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -15,6 +17,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -59,13 +64,43 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(one, tow);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
+                mMap.addMarker(new MarkerOptions().position(latLng).title("Marker in "+ latLng));
+
                 Toast.makeText(getBaseContext(), String.valueOf(latLng.latitude+" "+latLng.longitude),
                         Toast.LENGTH_LONG).show();
+               initWheather(latLng);
+            }
+
+
+
+
+        });
+    }
+
+    private void initWheather(LatLng latLng) {
+
+        Call<Response> call = RestClient.mycounryisService2.getWeather2();
+        call.enqueue(new Callback<Response>() {
+            @Override
+            public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                Response a = response.body();
+                a.getMain().getTemp();
+                int b = 5;
+
+            }
+
+            @Override
+            public void onFailure(Call<Response> call, Throwable t) {
+                int c = 6;
+                int n = 6;
+
             }
         });
+
     }
 }
