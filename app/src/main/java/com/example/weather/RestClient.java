@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestClient {
     private static final String BASE_URL = "https://restcountries.eu/rest/";
-    private static final String BASE_URL2 = "https://samples.openweathermap.org/data/2.5/";
+    private static final String BASE_URL2 = "http://api.openweathermap.org/data/2.5/";
     private static Retrofit myRetrofit = new  Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())

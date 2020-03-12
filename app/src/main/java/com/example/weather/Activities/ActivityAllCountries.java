@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 public class ActivityAllCountries extends AppCompatActivity implements FragmentAllCountries.OnFragmentInteractionListener {
     public static final String KEY= "KEY";
+    public static final String KEYCOUNTRY= "KEYCOUNTRY";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class ActivityAllCountries extends AppCompatActivity implements FragmentA
         Intent resultIntent = new Intent(this, MapsActivity.class);
         ArrayList latLang= (ArrayList) myCountry.getLatlng();
         resultIntent.putParcelableArrayListExtra(KEY,  latLang);
+        resultIntent.putExtra(KEYCOUNTRY,myCountry);
         startActivity(resultIntent);
 
 
